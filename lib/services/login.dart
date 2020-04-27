@@ -1,14 +1,13 @@
 import 'dart:convert';
-
+import 'package:carsapp/application_config.dart';
 import 'package:carsapp/models/user.dart';
 import 'package:carsapp/utils/api_response.dart';
 import 'package:http/http.dart' as http;
 
-final baseUrl = 'http://carros-springboot.herokuapp.com/api';
 
 class LoginService {
   static Future<ApiResponse<User>> login(String login, String password) async {
-    final url = "$baseUrl/v2/login";
+    final url = "$carsUrlBase/v2/login";
 
     final Map params = {
       'username': login,
