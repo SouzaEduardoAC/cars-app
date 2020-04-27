@@ -1,3 +1,7 @@
+import 'package:carsapp/pages/home.dart';
+import 'package:carsapp/services/login.dart';
+import 'package:carsapp/utils/alerts.dart';
+import 'package:carsapp/utils/route.dart';
 import 'package:carsapp/widgets/buttons.dart';
 import 'package:carsapp/widgets/form_fields.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   final _controllerLogin = TextEditingController();
   final _controllerPassword = TextEditingController();
   final _passwordFocus = FocusNode();
+  bool _showProgress = false;
 
   @override
   void initState() {
@@ -62,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 height: 28,
               ),
-              Button('Login', onPressed: _onPressed),
+              _loginButton()
             ],
           ),
         ),
@@ -73,12 +78,30 @@ class _LoginPageState extends State<LoginPage> {
     return null;
   }
 
-  _onPressed() {
-    var isValid = _formKey.currentState.validate();
+  _onPressed() async {
+    final isValid = _formKey.currentState.validate();
     if (!isValid) return;
 
-    String login = _controllerLogin.text;
-    String password = _controllerPassword.text;
+    setState(() {
+      _showProgress = true;
+    });
+
+    final login = _controllerLogin.text;
+    final password = _controllerPassword.text;
     print('Login: $login | Password: $password');
+
+    final apiResponse = await LoginService.login(login, password);
+
+    apiResponse.success
+        ? push(context, HomePage())
+        : popDialog(context, apiResponse.msg);
+
+    setState(() {
+      _showProgress = false;
+    });
   }
+
+  _loginButton() => _showProgress
+      ? Button('Login', onPressed: _onPressed, showProgress: true)
+      : Button('Login', onPressed: _onPressed, showProgress: false);
 }
