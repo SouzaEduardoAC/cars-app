@@ -14,13 +14,17 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   @override
   void initState() {
     super.initState();
+    _initTabs();
+  }
+
+  _initTabs() async {
+    int tabIndex = await Prefs.getInt("tabIndex");
     _tabController = TabController(length: 3, vsync: this);
-
-    Future<int> future = Prefs.getInt("tabIdx");
-    future.then((int tabIdx) => _tabController.index = tabIdx);
-
+    setState(() {
+      _tabController.index = tabIndex;
+    });
     _tabController.addListener(() {
-      Prefs.setInt("tabIdx", _tabController.index);
+      Prefs.setInt("tabIndex", _tabController.index);
     });
   }
 
@@ -29,7 +33,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     return Scaffold(
       appBar: AppBar(
         title: Text('Cars'),
-        bottom: TabBar(
+        bottom: _tabController == null ?  null :
+        TabBar(
           controller: _tabController,
           tabs: <Widget>[
             Tab(text: 'Classic',),
@@ -39,7 +44,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         ),
       ),
       drawer: NavDrawer(),
-      body: TabBarView(
+      body: _tabController == null ?  null :
+      TabBarView(
         controller: _tabController,
         children: <Widget>[
           _classicCars(),
