@@ -1,3 +1,4 @@
+import 'package:carsapp/models/user.dart';
 import 'package:carsapp/pages/home.dart';
 import 'package:carsapp/services/login.dart';
 import 'package:carsapp/utils/alerts.dart';
@@ -21,6 +22,12 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    User.get().then((User user) {
+      if (user != null)
+        setState(() {
+          _controllerLogin.text = user.login;
+        });
+      });
   }
 
   @override

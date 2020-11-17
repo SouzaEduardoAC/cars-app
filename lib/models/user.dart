@@ -46,10 +46,18 @@ class User {
     Prefs.setString('user.prefs', convert.json.encode(toJson()));
   }
 
-  static Future<User> get() async => User.fromJson(convert.json.decode(await Prefs.getString('user.prefs')));
+  static Future<User> get() async {
+    final json = await Prefs.getString('user.prefs');
+    if (json.isEmpty) return null;
+    return User.fromJson(convert.json.decode(json));
+  }
 
   @override
   String toString() {
     return 'User{id: $id, login: $login, nome: $nome, email: $email, urlFoto: $urlFoto, token: $token, roles: $roles}';
+  }
+
+  static void clear() {
+    Prefs.setString('user.prefs', '');
   }
 }

@@ -59,6 +59,7 @@ class NavDrawer extends StatelessWidget {
   }
 
   _logout(BuildContext context) {
+    User.clear();
     Navigator.pop(context);
     pushReplacement(context, LoginPage());
   }
