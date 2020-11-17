@@ -28,11 +28,15 @@ class LoginService {
 
      final mapResponse = json.decode(response.body);
 
-     ApiResponse<User> loginResponse = response.statusCode == 200
-         ? ApiResponse.success(User.fromJson(mapResponse))
-         : ApiResponse.error(mapResponse['error']);
+     print('Response body: ${response.body}');
 
-     return loginResponse;
+     if (response.statusCode == 200)
+     {
+       final user = User.fromJson(mapResponse);
+       user.save();
+       return ApiResponse.success(user);
+     }
+     return ApiResponse.error(mapResponse['error']);
    } catch(error, exception) {
       print('>>> Login error : $error > $exception');
       ApiResponse.error("Couldn't connect to server");
