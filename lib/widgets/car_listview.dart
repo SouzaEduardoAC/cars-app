@@ -1,5 +1,7 @@
 import 'package:carsapp/models/car.dart';
+import 'package:carsapp/pages/car.dart';
 import 'package:carsapp/services/car.dart';
+import 'package:carsapp/utils/route.dart';
 import 'package:flutter/material.dart';
 
 class CarsListView extends StatefulWidget {
@@ -77,7 +79,7 @@ class _CarsListViewState extends State<CarsListView> with AutomaticKeepAliveClie
                       children: <Widget>[
                         FlatButton(
                           child: const Text('Details'),
-                          onPressed: () {},
+                          onPressed: () => _onClickCar(car),
                         ),
                         FlatButton(
                           child: const Text('Share'),
@@ -104,4 +106,6 @@ class _CarsListViewState extends State<CarsListView> with AutomaticKeepAliveClie
 
   @override
   bool get wantKeepAlive => true;
+
+  _onClickCar(Car car) => push(context, CarPage(car));
 }
