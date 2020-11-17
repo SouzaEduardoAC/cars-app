@@ -17,10 +17,6 @@ class _CarsListViewState extends State<CarsListView> with AutomaticKeepAliveClie
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return _body();
-  }
-
-  _body() {
     return FutureBuilder(
         future: _getFuture(),
         builder: (context, snapshot) {
